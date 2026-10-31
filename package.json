@@ -1,0 +1,30 @@
+{
+  "name": "booknook-server",
+  "version": "1.0.0",
+  "description": "Express and MongoDB API for the BookNook online library.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node --watch index.js",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arafsarkar13/booknook-server.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/arafsarkar13/booknook-server/issues"
+  },
+  "homepage": "https://github.com/arafsarkar13/booknook-server#readme",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.9",
+    "express": "^5.3.0",
+    "jose": "^6.2.14",
+    "mongodb": "^7.8.0"
+  }
+}

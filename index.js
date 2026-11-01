@@ -2,7 +2,9 @@ import express from "express";
 import cors from "cors";
 import "dotenv/config";
 import { getDb } from "./db.js";
+import { verifyToken } from "./middleware/verifyToken.js";
 import booksRouter from "./routes/books.js";
+import borrowsRouter from "./routes/borrows.js";
 
 const app = express();
 
@@ -23,6 +25,8 @@ app.get("/", async (_req, res) => {
 });
 
 app.use("/books", booksRouter);
+// Every borrow route needs a logged in user
+app.use("/borrows", verifyToken, borrowsRouter);
 
 // Any address we don't have
 app.use((_req, res) => {
@@ -35,7 +39,6 @@ app.use((error, _req, res, _next) => {
   res.status(500).json({ message: "Something went wrong on the server." });
 });
 
-// Vercel runs the app itself, so only listen when working locally
 if (!process.env.VERCEL) {
   const port = process.env.PORT || 5000;
   app.listen(port, () => console.log(`BookNook API running on port ${port}`));

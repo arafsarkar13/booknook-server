@@ -8,7 +8,13 @@ export async function getDb() {
 
   const client = new MongoClient(process.env.MONGODB_URI);
   await client.connect();
+  const db = client.db("booknook");
 
-  cachedDb = client.db("booknook");
-  return cachedDb;
+  // One person can have only one active borrow of the same book
+  await db
+    .collection("borrows")
+    .createIndex({ bookId: 1, userEmail: 1 }, { unique: true });
+
+  cachedDb = db;
+  return db;
 }

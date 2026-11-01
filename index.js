@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import "dotenv/config";
 import { getDb } from "./db.js";
+import booksRouter from "./routes/books.js";
 
 const app = express();
 
@@ -21,7 +22,20 @@ app.get("/", async (_req, res) => {
   }
 });
 
-// Vercel runs the app itself, so we only listen when working locally
+app.use("/books", booksRouter);
+
+// Any address we don't have
+app.use((_req, res) => {
+  res.status(404).json({ message: "Route not found." });
+});
+
+// Any unexpected error ends up here
+app.use((error, _req, res, _next) => {
+  console.error(error);
+  res.status(500).json({ message: "Something went wrong on the server." });
+});
+
+// Vercel runs the app itself, so only listen when working locally
 if (!process.env.VERCEL) {
   const port = process.env.PORT || 5000;
   app.listen(port, () => console.log(`BookNook API running on port ${port}`));

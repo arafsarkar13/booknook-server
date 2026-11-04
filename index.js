@@ -9,7 +9,7 @@ import borrowsRouter from "./routes/borrows.js";
 const app = express();
 
 // Middleware: runs on every request before our routes
-app.use(cors());
+app.use(cors({ origin: process.env.CLIENT_URL }));
 app.use(express.json());
 
 // Health check: also confirms the database is reachable

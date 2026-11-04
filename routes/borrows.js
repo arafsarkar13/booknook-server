@@ -113,8 +113,18 @@ router.delete("/:id", async (req, res, next) => {
         .json({ message: "You can only return books that you borrowed." });
     }
 
-    await borrows.deleteOne({ _id: borrow._id });
-    // Put the copy back on the shelf
+    // Delete first, and only continue if WE really deleted it
+    const result = await borrows.deleteOne({
+      _id: borrow._id,
+      userEmail: req.user.email,
+    });
+    if (result.deletedCount !== 1) {
+      return res
+        .status(404)
+        .json({ message: "This book was already returned." });
+    }
+
+    // Put the copy back on the shelf (only once)
     await db
       .collection("books")
       .updateOne(
